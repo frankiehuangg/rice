@@ -1,5 +1,4 @@
 local awful = require "awful"
--- local bling
 
 local l = awful.layout.suit
 

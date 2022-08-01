@@ -25,6 +25,8 @@ awful.keyboard.append_global_keybindings({
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey },            "r",     function () awful.spawn.with_shell("rofi -show drun") end,
               {description = "run prompt", group = "launcher"}),
+    awful.key({},            "F4",        function ()  awful.spawn.with_shell("flameshot gui") end,
+              {description = "run flameshot", group = "launcher"}),
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
 })

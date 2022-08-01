@@ -1,58 +1,72 @@
 local awful = require "awful"
-local ruled = require "ruled"
+local beautiful = require("beautiful")
 
-
-
-
-ruled.client.connect_signal("request::rules", function()
-    ruled.client.append_rule {
-        id         = "global",
-        rule       = { },
-        properties = {
-            focus     = awful.client.focus.filter,
-            raise     = true,
-            screen    = awful.screen.preferred,
-            placement = awful.placement.no_overlap+awful.placement.no_offscreen
+awful.rules.rules = {
+    -- Global settings
+    { 
+        rule = { },
+        properties = { 
+                        border_width = beautiful.border_width,
+                        border_color = beautiful.border_normal,
+                        focus = awful.client.focus.filter,
+                        raise = true,
+                        keys = clientkeys,
+                        buttons = clientbuttons,
+                        screen = awful.screen.preferred,
+                        placement = awful.placement.no_overlap+awful.placement.no_offscreen
         }
-    }
+    },
 
-    ruled.client.append_rule {
-        id       = "floating",
+    -- Floating clients.
+    { 
         rule_any = {
-            instance = { "copyq", "pinentry" },
-            class    = {
-                "Arandr", "Blueman-manager", "Gpick", "Kruler", "Sxiv",
-                "Tor Browser", "Wpa_gui", "veromix", "xtightvncviewer"
+            instance = {
+                "DTA",  -- Firefox addon DownThemAll.
+                "copyq",  -- Includes session name in class.
+                "pinentry",
             },
-            name    = {
+            class = {
+                "Arandr",
+                "Blueman-manager",
+                "Gpick",
+                "Kruler",
+                "MessageWin",  -- kalarm.
+                "Sxiv",
+                "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
+                "Wpa_gui",
+                "veromix",
+                "xtightvncviewer"},
+
+            -- Note that the name property shown in xprop might be set slightly after creation of the client
+            -- and the name shown there might not match defined rules here.
+            name = {
                 "Event Tester",  -- xev.
             },
-            role    = {
-                "AlarmWindow",    -- Thunderbird's calendar.
+            role = {
+                "AlarmWindow",  -- Thunderbird's calendar.
                 "ConfigManager",  -- Thunderbird's about:config.
-                "pop-up",         -- e.g. Google Chrome's (detached) Developer Tools.
+                "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
             }
-        },
+        }, 
         properties = { floating = true }
-    }
+    },
 
-    ruled.client.append_rule {
-        id         = "titlebars",
-        rule_any   = { type = { "normal", "dialog" } },
-        properties = { titlebars_enabled = false      }
-    }
+    -- Toggle titlebars
+    { 
+        rule_any = {
+            type = { "normal", "dialog" }
+        }, 
+        properties = { titlebars_enabled = false }
+    },
 
-    ruled.client.append_rule {
-        rule       = { class = "discord"     },
-        properties = { 
-		tag = screen[1].tags[5]
-	}
-    }
+    -- Set application rules
+    { 
+        rule = { instance = "feh" },
+        properties = { floating = true } 
+    },
 
-    ruled.client.append_rule {
-	rule = { class = "Spotify" },
-	properties = {
-		tag = screen[1].tags[4]
-	}
+    {
+        rule = { instance = "discord" },
+        properties = { tag = screen[1].tags[5] }
     }
-end)
+}
