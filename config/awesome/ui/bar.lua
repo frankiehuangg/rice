@@ -9,7 +9,7 @@ local dpi = beautiful.xresources.apply_dpi
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Tag table
-    awful.tag({ "ඞ", "ඞ", "ඞ", "ඞ", "ඞ" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[1])
 
     -- Wibox canvas
     s.bar = awful.wibar { 
@@ -22,7 +22,7 @@ awful.screen.connect_for_each_screen(function(s)
 		bg = beautiful.bar,
 	}
 
-	-- s.bar.x = dpi(20)
+	s.bar.x = dpi(20+(s.index-1)*1920)
 
 	s.bar:struts { top = dpi(90), left = dpi(20), right = dpi(20)}
 
