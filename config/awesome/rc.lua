@@ -1,73 +1,45 @@
--- If LuaRocks is installed, make sure that packages installed through it are
--- found (e.g. lgi). If LuaRocks is not installed, do nothing.
+--[[
+ ______     __     __     ______     ______     ______     __    __     ______     __     __     __    __    
+/\  __ \   /\ \  _ \ \   /\  ___\   /\  ___\   /\  __ \   /\ "-./  \   /\  ___\   /\ \  _ \ \   /\ "-./  \   
+\ \  __ \  \ \ \/ ".\ \  \ \  __\   \ \___  \  \ \ \/\ \  \ \ \-./\ \  \ \  __\   \ \ \/ ".\ \  \ \ \-./\ \  
+ \ \_\ \_\  \ \__/".~\_\  \ \_____\  \/\_____\  \ \_____\  \ \_\ \ \_\  \ \_____\  \ \__/".~\_\  \ \_\ \ \_\ 
+  \/_/\/_/   \/_/   \/_/   \/_____/   \/_____/   \/_____/   \/_/  \/_/   \/_____/   \/_/   \/_/   \/_/  \/_/ 
+                                                                                                             
+  --]]
+
 pcall(require, "luarocks.loader")
 
+local awful = require "awful"
+local gears = require "gears"
+local beautiful = require "beautiful"
 
--- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
-require("awful.autofocus")
-local wibox = require("wibox")
-local beautiful = require("beautiful")
-local naughty = require("naughty")
-local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup")
-local gfs = require("gears.filesystem")
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
+require "main.error_handling"
 
-require "conf"
-require "ui"
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/theme.lua")
 
--- Error handling
-if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
-end
+-- init config
+require "main.wallpaper"
+require "main.layout"
+require "main.rules"
+require "main.bindings.bindings"
+require "main.bindings.custom_bindings"
+require "main.tags"
+require "main.menu"
 
--- Handle runtime errors after startup
-do
-    local in_error = false
-    awesome.connect_signal("debug::error", function (err)
-        -- Make sure we don't go into an endless error loop
-        if in_error then return end
-        in_error = true
+require "awful.autofocus"
 
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
-        in_error = false
-    end)
-end
+-- init widget
+require "misc"
+require "signals"
 
--- -- Theme config
--- beautiful.init(gfs.get_configuration_dir() .. "themes/theme.lua")
+-- Autorun at startup
+awful.spawn.with_shell("bash ~/.config/awesome/main/autorun.sh")
 
--- Wallpaper
-local function set_wallpaper(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
-    end
-end
-
-screen.connect_signal("property::geometry", set_wallpaper)
-
--- Screen tag
-awful.screen.connect_for_each_screen(function(s)
-   -- Wallpaper
-   set_wallpaper(s)
+local get_monitors = [[ xrandr | grep "DP-2 disconnected" ]]
+awful.spawn.easy_async_with_shell(get_monitors, function(stdout)
+    if stdout == nil then
+        awful.spawn.with_shell("xrandr --output DP-2 --primary --left-of eDP-1")
+    else
+        awful.spawn.with_shell("xrandr --output DP-2 --off --output eDP-1 --primary")
+    end 
 end)
-
--- Mouse bindings
-root.buttons(gears.table.join(
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
