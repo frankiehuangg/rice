@@ -206,6 +206,19 @@ Additional catppuccin themes:
 - Kitty - `kitty +kitten themes`.
 - Obsidian
 
-#### Neovim
-
 #### Setup Firefox
+
+Settings: Search > Default Search Engine > DuckDuckGo
+
+Settings: Search > Search Suggestions > Disable
+
+Settings: Search > Search Shortcuts > Remove all
+
+Settings: Privacy & Security > Cookies and Site Data > Check
+
+Settings: Logins and Passwords > Disable
+
+#### Further Setup
+
+- Virtual Machine Manager
+- rclone
