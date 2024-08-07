@@ -109,7 +109,7 @@ Check if it's installed with `startx`.
 Download the following packages with pacman
 
 ```text
-base-devel code discord dolphin firefox gdb git konsole htop python-pycryptodome python-pwntools pwninit sagemath unzip wget wine wireshark-qt
+base-devel code discord dolphin firefox gdb git konsole htop less openssh python-pycryptodome python-pwntools pwninit sagemath unzip wget wine wireshark-qt
 ```
 
 Clone `yay` from github, then `cd` to the directory and use `makepkg -si`. 
