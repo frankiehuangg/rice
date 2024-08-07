@@ -33,14 +33,14 @@ arning is detected.
 7. Next, choose the `Write` option, then `yes`. Quit the program by choosing the
 `Quit` option. Ensure the partition is successful by viewing it using `lsblk`.
 8. Format the partitions
-- `mkfs.fat -F32 /dev/[NAME]` for the `boot` partition
-- `mkswap /dev/[NAME]` then `swapon /dev/[NAME]` for the `swap` partition
-- `mkfs.ext4 /dev/[NAME]` for the `root` partition. Hit `y` when prompted.
-- `mkfs.ext4 /dev/[NAME]` for the `home` partition. Hit `y` when prompted.
+- `mkfs.fat -F32 /dev/[boot]` for the `boot` partition
+- `mkswap /dev/[swap]` then `swapon /dev/[NAME]` for the `swap` partition
+- `mkfs.ext4 /dev/[root]` for the `root` partition. Hit `y` when prompted.
+- `mkfs.ext4 /dev/[home]` for the `home` partition. Hit `y` when prompted.
 9. Mount the partitions
-- `mount /dev/[NAME] /mnt` for the `root` partition.
-- `mkdir /mnt/boot` then `mount /dev/[NAME] /mnt/boot` for the `boot` partition.
-- `mkdir /mnt/home` then `mount /dev/[NAME] /mnt/home` for the `home` partition.
+- `mount /dev/[root] /mnt` for the `root` partition.
+- `mkdir /mnt/boot` then `mount /dev/[boot] /mnt/boot` for the `boot` partition.
+- `mkdir /mnt/home` then `mount /dev/[home] /mnt/home` for the `home` partition.
 Ensure the partitions are mounted correctly with `lsblk`.
 
 ### Installation
@@ -91,7 +91,7 @@ linux /vmlinuz-linux
 initrd /initramfs-linux.img
 ```
 4. Next, type
-`echo "options root=PARTUUID=$(blkid -s PARTUUID -o value /dev/[NAME]2) rw" >> /boot/loader/entries/arch.conf`.
+`echo "options root=PARTUUID=$(blkid -s PARTUUID -o value /dev/[root]) rw" >> /boot/loader/entries/arch.conf`.
 Check if the string above is appended to the `/boot/loader/entries/arch.conf` file.
 5. Reboot the system.
 
@@ -109,120 +109,53 @@ Check if it's installed with `startx`.
 Download the following packages with pacman
 
 ```text
-base-devel
-cava
-cmatrix
-discord
-dolphin
-fd
-firefox
-flameshot
-git
-htop
-kitty
-neofetch
-obsidian
-qbittorrent
-ripgrep
-spotify-launcher
-unzip
-wget
+base-devel code discord dolphin firefox gdb git konsole htop python-pycryptodome python-pwntools pwninit sagemath unzip wget wine wireshark-qt
 ```
 
 Clone `yay` from github, then `cd` to the directory and use `makepkg -si`. 
 Next, download the  following packages with `yay`
 
 ```text
-brave-bin
-notion-app
-zoom
+burpsuite-pro pycdc-git
 ```
 
 Ensure the following packages are installed (should be installed, but just check
 to make sure).
 
 ```text
-kscreen
-plasma-nm
-systemsettings
+kscreen plasma-nm systemsettings
 ```
 
 #### System Settings
 
 Download KDE catppuccin themes: `https://github.com/catppuccin/kde`.
-Settings: Latte, Sky, MacOS, then `ln -s ~/.local/share/icons ~/.icons`.
-
-Download Lightly: `https://github.com/Luwx/Lightly`.
-Settings: Appearance > Application Style: Lightly
-
-Download Colloid window decorations: `https://github.com/vinceliuice/Colloid-kde`.
-Settings: Appearance > Window Decorations: `Colloid-light-round`.
+Settings: Frappe, Sky, MacOS, then `ln -s ~/.local/share/icons ~/.icons`.
 
 Download SF Mono Fonts: `yay -S nerd-fonts-sf-mono`.
-Settings: Appearance > Fonts
+Settings: Text & Fonts > Fonts
 - General       : Liga SFMono Nerd Font 10
 - Fixed width   : Liga SFMono Nerd Font 10
 - Small         : Noto Sans 8pt
 - Toolbar       : Noto Sans 10pt
 - Menu          : Noto Sans 10pt
 - Window title  : Noto Sans 10pt
-Download Catppuccin's Papirus Folders: `yay -S papirus-folders-catppuccin-git`.
-`papirus-folders -t Papirus -C cat-latte-sky`
-Settings: Appearance > Icons: Papirus Colors (by x-varlesh-x)
 
-Settings: Appearance > Cursors: Breeze Light
+Settings: Colors & Themes > Splash Screen: Catppuccin Latte Sky
 
-Settings: Appearance > Splash Screen: Catppuccin Latte Sky
+Settings: General Behavior > Clicking files or folders: Selects them
 
-Settings: Workspace Behavior > General Behavior > Clicking files or folders: Selects them
+Settings: Window Management > Desktop Effects > Enable blur
 
-Settings: Workspace Behavior > Desktop Effects > Enable blur
+Settings: Screen Locking > Lock automatically after 15 minutes
 
-Settings: Workspace Behavior > Touchscreen Gestures > Top: Lock screen
-Settings: Workspace Behavior > Touchscreen Gestures > Left: Present Windows - Current Desktop
-Settings: Workspace Behavior > Touchscreen Gestures > Right: Desktop Grid
-
-Settings: Workspace Behavior > Screen Locking > Lock automatically after 15 minutes
-
-Settings: Workspace Behavior > Virtual Desktops > Enable Navigation wraps around, create 5 VDs
-
-Settings: Shortcuts > Emoji Selector: Meta+.
-Settings: Shortcuts > Flameshot > Take screenshot: Meta+Print
-Settings: Shortcuts > kitty: Meta+Return
-
-Settings: Startup and Shutdown > Login Screen (SDDM): Breeze
-Settings: Startup and Shutdown > Autostart: Fcitx
-
-Settings: Applications > Default Application > Terminal emulator: kitty
+Settings: Window Management > Virtual Desktops > Enable Navigation wraps around, create 3 VDs
 
 #### Finishing Touches
-
-Create an empty panel with size 36
-Widgets: Pager, Panel Spacer, Icons-only Task Manager, Panel Spacer, System Tray, Digital Clock
-Settings: Left, Auto Hide, Translucent
 
 Configure pager:
 - Enable Show only current screen.
 - Enable Navigation wraps around.
 - Text display: Desktop name
-
-Configs: neovim, kitty
-
-Additional catppuccin themes:
-- Kitty - `kitty +kitten themes`.
-- Obsidian
-
-#### Setup Firefox
-
-Settings: Search > Default Search Engine > DuckDuckGo
-
-Settings: Search > Search Suggestions > Disable
-
-Settings: Search > Search Shortcuts > Remove all
-
-Settings: Privacy & Security > Cookies and Site Data > Check
-
-Settings: Logins and Passwords > Disable
 
 #### Further Setup
 
