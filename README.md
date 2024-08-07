@@ -16,25 +16,31 @@ arning is detected.
     - Partition type: EF00
     - Name: boot
 - Second partition
-    - Sector size: `default` (2048)
+    - Sector size: `default`
+    - Total size: RAM size (RAM >= 4GB)
+    - Partition type: 8200
+    - Name: swap
+- Third partition (optional)
+    - Sector size: `default`
     - Total size: 16GiB
-    - Partition type: `default` (8300)
+    - Partition type: `default`
     - Name: root
-- Thirt partition
+- Fourth partition
     - Sector size: `default` (2048)
     - Total size: `default` (the rest)
     - Partition type: `default` (8300)
-    - Name: home
+    - Name: home (root if no third partition)
 7. Next, choose the `Write` option, then `yes`. Quit the program by choosing the
 `Quit` option. Ensure the partition is successful by viewing it using `lsblk`.
 8. Format the partitions
-- `mkfs.fat -F32 /dev/[NAME]1` for the `boot` partition
-- `mkfs.ext4 /dev/[NAME]2` for the `root` partition. Hit `y` when prompted.
-- `mkfs.ext4 /dev/[NAME]3` for the `home` partition. Hit `y` when prompted.
+- `mkfs.fat -F32 /dev/[NAME]` for the `boot` partition
+- `mkswap /dev/[NAME]` then `swapon /dev/[NAME]` for the `swap` partition
+- `mkfs.ext4 /dev/[NAME]` for the `root` partition. Hit `y` when prompted.
+- `mkfs.ext4 /dev/[NAME]` for the `home` partition. Hit `y` when prompted.
 9. Mount the partitions
-- `mount /dev/[NAME]2 /mnt` for the `root` partition.
-- `mkdir /mnt/boot` then `mount /dev/[NAME]1 /mnt/boot` for the `boot` partition.
-- `mkdir /mnt/home` then `mount /dev/[NAME]3 /mnt/home` for the `home` partition.
+- `mount /dev/[NAME] /mnt` for the `root` partition.
+- `mkdir /mnt/boot` then `mount /dev/[NAME] /mnt/boot` for the `boot` partition.
+- `mkdir /mnt/home` then `mount /dev/[NAME] /mnt/home` for the `home` partition.
 Ensure the partitions are mounted correctly with `lsblk`.
 
 ### Installation
