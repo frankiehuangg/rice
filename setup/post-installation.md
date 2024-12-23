@@ -18,7 +18,7 @@ $ cd yay && makepkg -si
 3. Aditionally download the following packages with the following commands
 
 ```console
-# pacman -S code curl discord docker flameshot gdb htop jq less \
+# pacman -S btop code curl discord docker flameshot gdb jq less \
 			neofetch python-pycryptodome python-pwntools pwninit \
 			qbittorrent sagemath ttf-jetbrains-mono-nerd steam \
 			typst vlc wireshark-qt
