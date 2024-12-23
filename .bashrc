@@ -6,9 +6,8 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
-alias c='tput clear'
-PS1='> ' # main prompt
+alias grep='grep --color=auto'
 
-PATH=$PATH:$HOME/.local/bin
+PS1='\n  \[\e[97;1m\]\t \[\e[22m\](\!, \#) \[\e[93;1m\]\u@\h \[\e[0;37m\]in \[\e[38;5;39;1m\]\w\n\[\e[0m\]\$ '
 
-#eval "$(starship init bash)"
+export PATH="$PATH:$HOME/.local/bin"
