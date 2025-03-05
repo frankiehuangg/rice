@@ -126,7 +126,7 @@ alias venv='source ~/.virtualenvs/bin/activate'
 
 ```console
 # pacman -S qemu-full virt-manager virt-viewer dnsmasq bridge-utils \
-			libguestfs ebtables vde2 openbsd-netcat
+			libguestfs iptables vde2 openbsd-netcat
 ```
 
 2. Start and enable the libvirtd service with the following commands
