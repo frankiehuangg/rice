@@ -23,51 +23,61 @@
 4. Wipe out the disk using the following command
 
 ```console
-# gdisk /dev/[NAME]
+# gdisk /dev/[device]
 ```
 
-5. Type `x` for expert mode, `z` to wipe all data and partitions, then `y` when asked
+Type `x` for expert mode, `z` to wipe all data and partitions, then `y` when asked
 
-6. Create the partitions using the following command
+5. Create the partitions using the following command
 
 ```console
-# cgdisk /dev/[NAME]
+# cgdisk /dev/[device]
 ```
 
-7. Ignore all Non-GPT or damaged disks warning if detected
+6. Ignore all Non-GPT or damaged disks warning if detected
 
-8. Create the following partitions:
+7. Create the following partitions:
 
 | Sector Size      | Total Size | Partition Type   | Name   |
 | ---------------- | ---------- | ---------------- | ------ |
 | `default` (2048) | `512MiB`   | `EF00`           | `boot` |
+| `default` (2048) | `16GiB`    | `8200`           | `swap` | 
 | `default` (2048) | `64GiB`    | `default` (8300) | `root` |
 | `default` (2048) | `default`  | `default` (8300) | `home` |
 
-9. Confirm the partition choice above by choosing the `Write` option, then `yes` when prompted
+Note that splitting the `root` and `home` directories will be more difficult to maintain
 
-10. Ensure the partition above is successful with the following command
+8. Confirm the partition choice above by choosing the `Write` option, then `yes` when prompted
+
+9. Ensure the partition above is successful with the following command
 
 ```console
 # lsblk
 ```
 
-11. Format the partitions above with the following commands
+10. Format the partitions above with the following commands
 
 ```console
-# mkfs.fat -F32 /dev/[NAME]1
-# mkfs.ext4 /dev/[NAME]2
-# mkfs.ext4 /dev/[NAME]3
+# mkfs.fat -F32 /dev/[boot]
+# mkfs.ext4 /dev/[root]
+# mkfs.ext4 /dev/[home]
+```
+
+11. Enable swap memory using the following command
+
+```console
+# mkswap /dev/[swap]
+# swapon /dev/[swap]
 ```
 
 12. Mount the partitions above with the following commands
 
 ```console
-# mount /dev/[NAME]2 /mnt
+# mount /dev/[root] /mnt
 # mkdir /mnt/boot
-# mount /dev/[NAME]1 /mnt/boot
+# mount /dev/[boot] /mnt/boot
 # mkdir /mnt/home
-# mount /dev/[NAME]3 /mnt/home
+# mount /dev/[home] /mnt/home
 ```
 
 13. Check if the partitions are mounted correctly with the following command
@@ -102,7 +112,7 @@
 1. Generate an fstab file with the following command
 
 ```console
-# genfstab -U /mnt >> /mnt/etc/fstab
+# genfstab -U -p /mnt >> /mnt/etc/fstab
 ```
 
 2. Change root with the following command
@@ -124,7 +134,7 @@
 # pacman -S sudo neovim bash-completion
 ```
 
-5. Setup the localization by editting the `/etc/locale.gen` file, then uncomment the `en_US.UTF-8 UTF-8` line
+5. Setup the localization by editing the `/etc/locale.gen` file, then uncomment the `en_US.UTF-8 UTF-8` line
 
 6. Generate the locale with the following command
 
@@ -137,7 +147,7 @@
 7. Create a hostname for the system using the following command
 
 ```console
-# echo [NAME] > /etc/hostname
+# echo [hostname] > /etc/hostname
 ```
 
 8. enable trim support for the SSD with the following command
@@ -157,8 +167,8 @@
 11. Create a user account with the following command
 
 ```console
-# useradd -m -g users -G wheel,storage,power -s /bin/bash [NAME]
-# passwd
+# useradd -m -g users -G wheel,storage,power -s /bin/bash [user]
+# passwd [user]
 ```
 
 12. Add the new user to the sudoers file with the following command
@@ -174,7 +184,7 @@
 ```console
 # ip link # find the network card
 # pacman -Sy dhcpcd networkmanager
-# systemctl enable dhcpcd@[DEV_NAME].service
+# systemctl enable dhcpcd@[device_name].service
 # systemctl enable NetworkManager.service
 ```
 
@@ -201,7 +211,7 @@ initrd /initramfs-linux.img
 18. Mount the root partition and enable `rw` to it with the following command
 
 ```console
-$ echo "options root=PARTUUID=$(blkid -s PARTUUID -o value /dev/[NAME]2) rw" >> /boot/loader/entries/arch.conf
+$ echo "options root=PARTUUID=$(blkid -s PARTUUID -o value /dev/[root]) rw" >> /boot/loader/entries/arch.conf
 ```
 
 19. Check if the command above is appended to the `/boot/loader/entries/arch.conf` file
@@ -224,10 +234,4 @@ $ grub-install --target=x86_64-efi --efi-directory=/boot -bootloader-id=GRUB
 $ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-23. Install grub on the boot partition with the following command
-
-```console
-$ grub-install /dev/[NAME]
-```
-
-24. Reboot the system and grub should be installed
+23. Reboot the system and grub should be installed
