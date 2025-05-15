@@ -17,7 +17,7 @@ $ startx
 3. Download KDE plasma with the following command
 
 ```console
-$ sudo pacman -S plasma sddm
+$ sudo pacman -S plasma-desktop sddm-kcm kscreen plasma-pa plasma-nm
 ```
 
 4. Enable sddm with the following command
