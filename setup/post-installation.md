@@ -5,7 +5,7 @@
 1. Download the following packages with the following command
 
 ```console
-# pacman -S 7zip base-devel dolphin firefox git gwenview konsole man-db man-pages okular openssh unzip wget
+# pacman -S 7zip base-devel firefox git gwenview kitty man-db man-pages okular openssh unzip wget
 ```
 
 2. Install `yay` and download the following packages with the following commands
@@ -18,11 +18,9 @@ $ cd yay && makepkg -si
 3. Aditionally download the following packages with the following commands
 
 ```console
-# pacman -S btop code curl discord docker flameshot gdb jq less \
-			neofetch python-pycryptodome python-pwntools pwninit \
-			qbittorrent sagemath ttf-jetbrains-mono-nerd steam \
-			typst vlc wireshark-qt
-$ yay -S brave-bin teams zoom
+# pacman -S bluedevil btop code curl discord docker flameshot gdb jq \
+    less neofetch python-pycryptodome python-pwntools pwninit \
+	qbittorrent sagemath ttf-jetbrains-mono-nerd steam vlc wireshark-qt
 ```
 
 ## Setup SSH
@@ -126,7 +124,7 @@ alias venv='source ~/.virtualenvs/bin/activate'
 
 ```console
 # pacman -S qemu-full virt-manager virt-viewer dnsmasq bridge-utils \
-			libguestfs iptables vde2 openbsd-netcat
+			libguestfs iptables vde2 openbsd-netcat swtpm
 ```
 
 2. Start and enable the libvirtd service with the following commands
@@ -136,18 +134,29 @@ alias venv='source ~/.virtualenvs/bin/activate'
 # systemctl enable libvirtd.service
 ```
 
-3. Locate and uncomment the following lines in the `/etc/libvirt/libvirtd.conf` file
+3. Enable virsh by default with the following commands
+
+```console
+# virsh net-start
+# virsh net-autostart
+```
+
+4. Locate and uncomment the following lines in the `/etc/libvirt/libvirtd.conf` file
 
 ```
 unix_sock_group = "libvirt"
 unix_sock_rw_perms = "0770"
 ```
 
-4. Add the current user to the libvirt group with the following command
+5. Add the current user to the libvirt group with the following command
 
 ```console
 # usermod -aG libvirt $USER
 ```
+
+To install Windows 11 on KVM, please refer to the following guide
+- https://sysguides.com/install-a-windows-11-virtual-machine-on-kvm
+- https://sysguides.com/share-files-between-the-kvm-host-and-windows-guest-using-virtiofs
 
 ## Setup Firefox
 
@@ -161,3 +170,4 @@ Settings: Privacy & Security > Cookies and Site Data > Check
 Settings: Privacy & Security > History > Only check "Clear history when Firefox closes"
 Settings: Privacy & Security > Logins and Passwords > Disable
 ```
+
