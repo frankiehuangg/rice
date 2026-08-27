@@ -13,8 +13,10 @@ PS1='\n  \[\e[97;1m\]\t \[\e[22m\](\!, \#) \[\e[93;1m\]\u@\h \[\e[0;37m\]in \[\e
 export PATH="$PATH:$HOME/.local/bin"
 export MAKEFLAGS=-j
 
-# CTFs related
-# alias pwninit='pwninit --template-path ~/Documents/CTFs/.template/solve.py'
-# alias pwnsetup='sudo docker rm --force pwn22; sudo docker run -d -p 25000:22 --name=pwn22 -v $(pwd):/CTF -v /tmp/.X11-unix:/tmp/.X11-unix pwnenv_ubuntu22'
-# alias pwndocker='docker exec -w /CTF -e TERM=xterm-256color -e display=$DISPLAY -it pwn22 bash'
-# export PYTHONPATH='$HOME/Documents/CTFs/.library'
+function y() {
+    local tmp cwd; tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd" || builtin true
+    command rm -f -- "$tmp"
+}

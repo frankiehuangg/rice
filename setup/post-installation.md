@@ -155,12 +155,33 @@ unix_sock_rw_perms = "0770"
 ```
 
 To install Windows 11 on KVM, please refer to the following guide
+
 - https://sysguides.com/install-a-windows-11-virtual-machine-on-kvm
 - https://sysguides.com/share-files-between-the-kvm-host-and-windows-guest-using-virtiofs
 
+## Setup Chinese Input
+
+1. Download the required packages
+
+```console
+# pacman -S fcitx5 fcitx5-chinese-addons fcitx5-pinyin-zhwiki
+```
+
+2. Set fcitx5 as the default virtual keyboard
+
+```
+System Settings > Input & Output > Keyboard > Virtual Keyboard
+```
+
+3. Add Pinyin to the list of input methods
+
+```
+System Settings > Input Method > Add Input Method
+```
+
 ## Setup Firefox
 
-1. Setup firefox with the following configurations
+Setup firefox with the following configurations
 
 ```
 Settings: Search > Default Search Engine > DuckDuckGo
@@ -170,4 +191,3 @@ Settings: Privacy & Security > Cookies and Site Data > Check
 Settings: Privacy & Security > History > Only check "Clear history when Firefox closes"
 Settings: Privacy & Security > Logins and Passwords > Disable
 ```
-
